@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     await sendVerificationEmail(email, verificationToken)
 
     return NextResponse.json(
-      { message: "Registration successful. Please verify your email." },
+      { message: "Registration successful. Please check your mail toverify you're account." },
       { status: 201 }
     )
   } catch (error) {

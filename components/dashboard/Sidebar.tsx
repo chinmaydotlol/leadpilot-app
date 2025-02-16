@@ -33,7 +33,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-64 fixed left-0 top-0 h-screen bg-black/60 border-r border-white/10">
+    <aside className="w-64 fixed left-0 top-0 h-screen bg-black/60 border-r border-white/10 z-50">
       <div className="flex flex-col h-full">
         <div className="p-6">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-[#9FC5A0] to-[#BDD9BF] bg-clip-text text-transparent">
