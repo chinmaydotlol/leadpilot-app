@@ -1,210 +1,164 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import {
-  RiSearchLine,
-  RiFilter3Line,
-  RiAddLine,
-  RiDownloadLine,
-  RiUploadLine,
-  RiMailLine,
-  RiStarLine,
-  RiStarFill,
-} from "react-icons/ri"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { 
+  Plus,
+  Search,
+  Filter,
+  Building,
+  Mail,
+  Phone,
+  Star
+} from "lucide-react";
+import SpotlightCard from "@/components/ui/spotlight-card";
 
-const leads = [
-  {
-    id: 1,
-    name: "John Smith",
-    company: "Tech Solutions Inc",
-    email: "john@techsolutions.com",
-    status: "Hot",
-    lastContacted: "2024-02-08",
-    tags: ["Enterprise", "SaaS"],
-    starred: true,
-  },
-  {
-    id: 2,
-    name: "Sarah Johnson",
-    company: "Digital Dynamics",
-    email: "sarah@digitaldynamics.com",
-    status: "Warm",
-    lastContacted: "2024-02-07",
-    tags: ["Startup", "E-commerce"],
-    starred: false,
-  },
-  {
-    id: 3,
-    name: "Michael Brown",
-    company: "Growth Corp",
-    email: "michael@growthcorp.com",
-    status: "Cold",
-    lastContacted: "2024-02-05",
-    tags: ["SMB"],
-    starred: true,
-  },
-]
+type LeadStatus = "new" | "contacted" | "meeting" | "qualified" | "lost";
 
-const statusColors = {
-  Hot: "bg-red-500/20 text-red-500",
-  Warm: "bg-orange-500/20 text-orange-500",
-  Cold: "bg-blue-500/20 text-blue-500",
+interface Lead {
+  id: string;
+  name: string;
+  company: string;
+  position: string;
+  email: string;
+  phone: string;
+  status: LeadStatus;
+  score: number;
+  lastContact: string;
+  source: string;
+  notes: string;
 }
 
+const leads: Lead[] = [
+  {
+    id: "1",
+    name: "Alex Thompson",
+    company: "Neural Dynamics",
+    position: "Head of Engineering",
+    email: "alex@neuraldynamics.ai",
+    phone: "+1 (415) 555-0123",
+    status: "qualified",
+    score: 92,
+    lastContact: "2024-02-25",
+    source: "LinkedIn",
+    notes: "Interested in AI-powered lead scoring"
+  },
+  {
+    id: "2",
+    name: "Maya Patel",
+    company: "CloudScale Systems",
+    position: "VP Technology",
+    email: "maya@cloudscale.com",
+    phone: "+1 (408) 555-0456",
+    status: "meeting",
+    score: 88,
+    lastContact: "2024-02-24",
+    source: "Referral",
+    notes: "Meeting scheduled for next week"
+  },
+  {
+    id: "3",
+    name: "David Kim",
+    company: "Quantum Solutions",
+    position: "CTO",
+    email: "david@quantumsolutions.tech",
+    phone: "+1 (650) 555-0789",
+    status: "contacted",
+    score: 75,
+    lastContact: "2024-02-23",
+    source: "Cold Email",
+    notes: "Follow-up needed"
+  },
+  {
+    id: "4",
+    name: "Sarah Chen",
+    company: "DataFlow Inc",
+    position: "Director of Innovation",
+    email: "sarah@dataflow.io",
+    phone: "+1 (628) 555-0147",
+    status: "new",
+    score: 82,
+    lastContact: "2024-02-22",
+    source: "Website",
+    notes: "Requested product demo"
+  }
+];
+
 export default function LeadsPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
-
-  const filteredLeads = leads.filter((lead) => {
-    const matchesSearch =
-      lead.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lead.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lead.email.toLowerCase().includes(searchQuery.toLowerCase())
-
-    const matchesStatus = selectedStatus ? lead.status === selectedStatus : true
-
-    return matchesSearch && matchesStatus
-  })
-
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-8"
-    >
+    <div className="space-y-6">
+      {/* header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Lead Management</h1>
-          <p className="text-gray-400">Manage and track your leads</p>
+          <h1 className="text-2xl font-semibold">Lead Pipeline</h1>
+          <p className="text-muted-foreground">
+            {leads.length} active leads · {leads.filter(lead => lead.status === "meeting").length} scheduled meetings
+          </p>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#9FC5A0] to-[#BDD9BF] text-black font-medium shadow-lg shadow-[#BDD9BF]/25 flex items-center gap-2"
-        >
-          <RiAddLine className="w-5 h-5" />
+        <Button className="hover:scale-[1.02] transition-transform">
+          <Plus className="mr-2 h-4 w-4" />
           Add Lead
-        </motion.button>
+        </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="lg:col-span-2 relative">
-          <RiSearchLine className="absolute left-4 top-3.5 text-gray-500 h-5 w-5" />
-          <Input
-            type="text"
-            placeholder="Search leads..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-12 pl-12 rounded-xl bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:border-[#BDD9BF]/40 focus:ring-0 transition-all duration-300 hover:bg-white/10"
-          />
-        </div>
-        <div>
-          <Button
-            variant="outline"
-            className="w-full h-12 rounded-xl bg-white/5 hover:bg-white/10 border-white/10 text-white gap-2"
-          >
-            <RiFilter3Line className="w-5 h-5" />
-            Filter
-          </Button>
-        </div>
-        <div>
-          <Button
-            variant="outline"
-            className="w-full h-12 rounded-xl bg-white/5 hover:bg-white/10 border-white/10 text-white gap-2"
-          >
-            <RiDownloadLine className="w-5 h-5" />
-            Export
-          </Button>
-        </div>
+      {/* search and filters */}
+      <div className="flex gap-4">
+        <Input
+          placeholder="Search by name, company, or position..."
+          className="max-w-sm hover:border-foreground/20 transition-colors"
+          type="search"
+        />
+        <Button variant="outline" className="hover:bg-muted/50 transition-colors">
+          <Filter className="mr-2 h-4 w-4" />
+          Filters
+        </Button>
       </div>
 
-      <div className="rounded-2xl backdrop-blur-lg bg-white/5 border border-white/10">
+      {/* Leads Table */}
+      <SpotlightCard className="rounded-xl overflow-hidden hover:border-foreground/20 transition-colors">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-white/10">
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-400"></th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-400">Name</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-400">Company</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-400">Status</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-400">Tags</th>
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-400">Last Contacted</th>
-                <th className="px-6 py-4 text-right text-sm font-medium text-gray-400">Actions</th>
+              <tr className="border-b border-border">
+                <th className="text-left p-4 text-sm font-medium text-muted-foreground">Name</th>
+                <th className="text-left p-4 text-sm font-medium text-muted-foreground">Company</th>
+                <th className="text-left p-4 text-sm font-medium text-muted-foreground">Position</th>
+                <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
+                <th className="text-left p-4 text-sm font-medium text-muted-foreground">Score</th>
+                <th className="text-left p-4 text-sm font-medium text-muted-foreground">Source</th>
+                <th className="text-left p-4 text-sm font-medium text-muted-foreground">Notes</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10">
-              {filteredLeads.map((lead) => (
-                <motion.tr
-                  key={lead.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="hover:bg-white/5 transition-colors group"
-                >
-                  <td className="px-6 py-4">
-                    <button className="text-gray-400 hover:text-[#BDD9BF] transition-colors">
-                      {lead.starred ? (
-                        <RiStarFill className="w-5 h-5 text-[#BDD9BF]" />
-                      ) : (
-                        <RiStarLine className="w-5 h-5" />
-                      )}
-                    </button>
-                  </td>
-                  <td className="px-6 py-4">
+            <tbody>
+              {leads.map((lead) => (
+                <tr key={lead.id} className="border-b border-border last:border-0 hover:bg-muted/5 transition-colors cursor-pointer">
+                  <td className="p-4">
                     <div>
-                      <p className="text-white font-medium">{lead.name}</p>
-                      <p className="text-gray-400 text-sm">{lead.email}</p>
+                      <div className="font-medium">{lead.name}</div>
+                      <div className="text-sm text-muted-foreground">{lead.email}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-300">{lead.company}</td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        statusColors[lead.status as keyof typeof statusColors]
-                      }`}
-                    >
+                  <td className="p-4">{lead.company}</td>
+                  <td className="p-4">{lead.position}</td>
+                  <td className="p-4">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize bg-secondary hover:bg-secondary/80 transition-colors">
                       {lead.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex gap-2">
-                      {lead.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-1 rounded-md text-xs font-medium bg-white/5 text-gray-300"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                  <td className="p-4">
+                    <div className="flex items-center gap-2">
+                      <Star className="w-4 h-4 text-yellow-500" />
+                      {lead.score}
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-300">{lead.lastContacted}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white"
-                      >
-                        <RiMailLine className="w-5 h-5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-white"
-                      >
-                        <RiUploadLine className="w-5 h-5" />
-                      </Button>
-                    </div>
-                  </td>
-                </motion.tr>
+                  <td className="p-4">{lead.source}</td>
+                  <td className="p-4 text-sm text-muted-foreground">{lead.notes}</td>
+                </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </div>
-    </motion.div>
-  )
+      </SpotlightCard>
+    </div>
+  );
 } 

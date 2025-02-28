@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { toast } from "sonner"
+import SpotlightCard from "@/components/ui/spotlight-card"
 
 function VerifyMailForm() {
   const router = useRouter()
@@ -53,7 +54,7 @@ function VerifyMailForm() {
   }, [searchParams, router])
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#080c08] overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-background overflow-hidden">
       <div className="aurora-container">
         <div className="aurora-1"></div>
         <div className="aurora-2"></div>
@@ -64,40 +65,41 @@ function VerifyMailForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative w-full max-w-md mx-4 overflow-hidden"
+        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+        className="relative w-full max-w-md mx-4"
       >
-        <div className="backdrop-blur-xl bg-black/60 rounded-3xl border border-white/5 shadow-2xl p-8 space-y-6">
+        <SpotlightCard className="p-8 space-y-6">
           <div className="text-center space-y-2">
             {isLoading ? (
               <>
-                <h1 className="text-2xl font-bold tracking-tight text-white">
+                <h1 className="text-2xl font-semibold">
                   Verifying Your Email
                 </h1>
                 <div className="flex justify-center mt-4">
-                  <div className="w-12 h-12 border-4 border-[#BDD9BF] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-12 h-12 border-4 border-foreground/20 border-t-transparent rounded-full animate-spin"></div>
                 </div>
               </>
             ) : isVerified ? (
               <>
-                <h1 className="text-2xl font-bold tracking-tight text-white">
+                <h1 className="text-2xl font-semibold">
                   Email Verified!
                 </h1>
-                <p className="text-gray-400 text-sm">
+                <p className="text-sm text-muted-foreground">
                   Redirecting you to login...
                 </p>
               </>
             ) : (
               <>
-                <h1 className="text-2xl font-bold tracking-tight text-white">
+                <h1 className="text-2xl font-semibold">
                   Verification Failed
                 </h1>
-                <p className="text-gray-400 text-sm">
+                <p className="text-sm text-muted-foreground">
                   Please try again or contact support.
                 </p>
                 <div className="mt-4">
                   <Link
                     href="/login"
-                    className="text-[#BDD9BF] hover:text-[#9FC5A0] transition-colors duration-300"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
                   >
                     Back to Login
                   </Link>
@@ -105,7 +107,7 @@ function VerifyMailForm() {
               </>
             )}
           </div>
-        </div>
+        </SpotlightCard>
       </motion.div>
     </div>
   )
@@ -115,8 +117,8 @@ export default function VerifyMail() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen w-full flex items-center justify-center bg-[#080c08]">
-          <div className="w-12 h-12 border-4 border-[#BDD9BF] border-t-transparent rounded-full animate-spin"></div>
+        <div className="min-h-screen w-full flex items-center justify-center bg-background">
+          <div className="w-12 h-12 border-4 border-foreground/20 border-t-transparent rounded-full animate-spin"></div>
         </div>
       }
     >

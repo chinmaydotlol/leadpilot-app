@@ -11,6 +11,7 @@ import { HiOutlineMail, HiOutlineUser } from "react-icons/hi"
 import { RiLockPasswordLine } from "react-icons/ri"
 import Link from "next/link"
 import { toast } from "sonner"
+import SpotlightCard from "@/components/ui/spotlight-card"
 
 export default function Register() {
   const router = useRouter()
@@ -53,7 +54,7 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#080c08] overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-background overflow-hidden">
       <div className="aurora-container">
         <div className="aurora-1"></div>
         <div className="aurora-2"></div>
@@ -64,18 +65,19 @@ export default function Register() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative w-full max-w-md mx-4 overflow-hidden"
+        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+        className="relative w-full max-w-md mx-4"
       >
-        <div className="backdrop-blur-xl bg-black/60 rounded-3xl border border-white/5 shadow-2xl p-8 space-y-6">
+        <SpotlightCard className="p-8 space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold tracking-tight text-white">Create an Account</h1>
-            <p className="text-gray-400 text-sm">Sign up to get started</p>
+            <h1 className="text-2xl font-semibold">Create an Account</h1>
+            <p className="text-sm text-muted-foreground">Sign up to get started</p>
           </div>
 
           <div className="space-y-4">
             <Button
               variant="outline"
-              className="w-full h-12 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full h-12 rounded-lg hover:bg-secondary/80 transition-all duration-300"
               onClick={handleGoogleSignIn}
               disabled={isLoading}
             >
@@ -85,22 +87,22 @@ export default function Register() {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10"></div>
+                <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-black px-2 text-gray-500">Or continue with</span>
+                <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
-                <HiOutlineUser className="absolute left-4 top-3.5 text-gray-500 h-5 w-5" />
+                <HiOutlineUser className="absolute left-4 top-3.5 text-muted-foreground h-5 w-5" />
                 <Input
                   type="text"
                   placeholder="Full name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="h-12 pl-12 rounded-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:border-[#BDD9BF]/40 focus:ring-0 transition-all duration-300 hover:bg-white/10"
+                  className="h-12 pl-12 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-foreground/20 transition-all duration-300"
                   disabled={isLoading}
                   required
                   minLength={2}
@@ -108,26 +110,26 @@ export default function Register() {
               </div>
 
               <div className="relative">
-                <HiOutlineMail className="absolute left-4 top-3.5 text-gray-500 h-5 w-5" />
+                <HiOutlineMail className="absolute left-4 top-3.5 text-muted-foreground h-5 w-5" />
                 <Input
                   type="email"
                   placeholder="Email address"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="h-12 pl-12 rounded-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:border-[#BDD9BF]/40 focus:ring-0 transition-all duration-300 hover:bg-white/10"
+                  className="h-12 pl-12 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-foreground/20 transition-all duration-300"
                   disabled={isLoading}
                   required
                 />
               </div>
 
               <div className="relative">
-                <RiLockPasswordLine className="absolute left-4 top-3.5 text-gray-500 h-5 w-5" />
+                <RiLockPasswordLine className="absolute left-4 top-3.5 text-muted-foreground h-5 w-5" />
                 <Input
                   type="password"
                   placeholder="Password"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="h-12 pl-12 rounded-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:border-[#BDD9BF]/40 focus:ring-0 transition-all duration-300 hover:bg-white/10"
+                  className="h-12 pl-12 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-foreground/20 transition-all duration-300"
                   disabled={isLoading}
                   required
                   minLength={6}
@@ -136,7 +138,7 @@ export default function Register() {
 
               <Button
                 type="submit"
-                className="w-full h-12 rounded-full bg-gradient-to-r from-[#9FC5A0] to-[#BDD9BF] hover:from-[#8FB590] hover:to-[#ADC9AD] text-black font-medium transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#BDD9BF]/25"
+                className="w-full h-12 bg-secondary hover:bg-secondary/80 text-foreground transition-all duration-300"
                 disabled={isLoading}
               >
                 {isLoading ? "Creating account..." : "Create Account"}
@@ -146,13 +148,13 @@ export default function Register() {
             <div className="text-center">
               <Link
                 href="/login"
-                className="text-sm text-gray-400 hover:text-[#BDD9BF] transition-colors duration-300"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
               >
                 Already have an account? Sign in
               </Link>
             </div>
           </div>
-        </div>
+        </SpotlightCard>
       </motion.div>
     </div>
   )

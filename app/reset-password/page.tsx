@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { RiLockPasswordLine } from "react-icons/ri"
 import Link from "next/link"
 import { toast } from "sonner"
+import SpotlightCard from "@/components/ui/spotlight-card"
 
 function ResetPasswordForm() {
   const router = useRouter()
@@ -70,7 +71,7 @@ function ResetPasswordForm() {
   }, [searchParams, router])
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#080c08] overflow-hidden">
+    <div className="min-h-screen w-full flex items-center justify-center bg-background overflow-hidden">
       <div className="aurora-container">
         <div className="aurora-1"></div>
         <div className="aurora-2"></div>
@@ -81,24 +82,25 @@ function ResetPasswordForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative w-full max-w-md mx-4 overflow-hidden"
+        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+        className="relative w-full max-w-md mx-4"
       >
-        <div className="backdrop-blur-xl bg-black/60 rounded-3xl border border-white/5 shadow-2xl p-8 space-y-6">
+        <SpotlightCard className="p-8 space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold tracking-tight text-white">Reset Password</h1>
-            <p className="text-gray-400 text-sm">Enter your new password</p>
+            <h1 className="text-2xl font-semibold">Reset Password</h1>
+            <p className="text-sm text-muted-foreground">Enter your new password</p>
           </div>
 
           <div className="space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
-                <RiLockPasswordLine className="absolute left-4 top-3.5 text-gray-500 h-5 w-5" />
+                <RiLockPasswordLine className="absolute left-4 top-3.5 text-muted-foreground h-5 w-5" />
                 <Input
                   type="password"
                   placeholder="New password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-12 pl-12 rounded-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:border-[#BDD9BF]/40 focus:ring-0 transition-all duration-300 hover:bg-white/10"
+                  className="h-12 pl-12 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-foreground/20 transition-all duration-300"
                   disabled={isLoading}
                   required
                   minLength={6}
@@ -106,13 +108,13 @@ function ResetPasswordForm() {
               </div>
 
               <div className="relative">
-                <RiLockPasswordLine className="absolute left-4 top-3.5 text-gray-500 h-5 w-5" />
+                <RiLockPasswordLine className="absolute left-4 top-3.5 text-muted-foreground h-5 w-5" />
                 <Input
                   type="password"
                   placeholder="Confirm new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="h-12 pl-12 rounded-full bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:border-[#BDD9BF]/40 focus:ring-0 transition-all duration-300 hover:bg-white/10"
+                  className="h-12 pl-12 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-foreground/20 transition-all duration-300"
                   disabled={isLoading}
                   required
                   minLength={6}
@@ -121,7 +123,7 @@ function ResetPasswordForm() {
 
               <Button
                 type="submit"
-                className="w-full h-12 rounded-full bg-gradient-to-r from-[#9FC5A0] to-[#BDD9BF] hover:from-[#8FB590] hover:to-[#ADC9AD] text-black font-medium transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#BDD9BF]/25"
+                className="w-full h-12 bg-secondary hover:bg-secondary/80 text-foreground transition-all duration-300"
                 disabled={isLoading}
               >
                 {isLoading ? "Resetting..." : "Reset Password"}
@@ -131,13 +133,13 @@ function ResetPasswordForm() {
             <div className="text-center">
               <Link
                 href="/login"
-                className="text-sm text-gray-400 hover:text-[#BDD9BF] transition-colors duration-300"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
               >
                 Back to Sign in
               </Link>
             </div>
           </div>
-        </div>
+        </SpotlightCard>
       </motion.div>
     </div>
   )
@@ -147,8 +149,8 @@ export default function ResetPassword() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen w-full flex items-center justify-center bg-[#080c08]">
-          <div className="w-12 h-12 border-4 border-[#BDD9BF] border-t-transparent rounded-full animate-spin"></div>
+        <div className="min-h-screen w-full flex items-center justify-center bg-background">
+          <div className="w-12 h-12 border-4 border-foreground/20 border-t-transparent rounded-full animate-spin"></div>
         </div>
       }
     >

@@ -1,150 +1,195 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { RiUserLine, RiMailLine, RiBarChartLine, RiRocketLine } from "react-icons/ri"
+import { Button } from "@/components/ui/button";
+import { 
+  Users, 
+  Mail,
+  Target,
+  LineChart,
+  ArrowRight,
+  Plus,
+  Building,
+  Phone
+} from "lucide-react";
+import SpotlightCard from "@/components/ui/spotlight-card";
 
-const stats = [
+const metrics = [
   {
-    name: "Total Leads",
-    value: "2,543",
-    change: "+12.3%",
-    icon: RiUserLine,
-  },
-  {
-    name: "Active Campaigns",
-    value: "8",
-    change: "+2",
-    icon: RiRocketLine,
-  },
-  {
-    name: "Email Opens",
-    value: "67.2%",
-    change: "+5.4%",
-    icon: RiMailLine,
+    name: "Lead Pipeline",
+    value: "2,459",
+    change: "+12.5%",
+    icon: Users,
   },
   {
-    name: "Conversion Rate",
-    value: "12.3%",
-    change: "+2.1%",
-    icon: RiBarChartLine,
+    name: "Qualified Leads",
+    value: "856",
+    change: "+8.2%",
+    icon: Target,
   },
-]
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
+  {
+    name: "Response Rate",
+    value: "24.8%",
+    change: "-2.1%",
+    icon: Mail,
   },
-}
+  {
+    name: "Avg. Deal Size",
+    value: "$45,230",
+    change: "+15.3%",
+    icon: LineChart,
+  }
+];
 
-const item = {
-  hidden: { y: 20, opacity: 0 },
-  show: { y: 0, opacity: 1 },
-}
+const recentLeads = [
+  {
+    name: "Mark Anderson",
+    company: "Quantum Computing Ltd",
+    position: "Head of Innovation",
+    source: "LinkedIn Outreach",
+    score: 92,
+    status: "Qualified"
+  },
+  {
+    name: "Rachel Chen",
+    company: "AI Solutions Group",
+    position: "CTO",
+    source: "Website Form",
+    score: 78,
+    status: "New"
+  },
+  {
+    name: "James Wilson",
+    company: "DataFlow Systems",
+    position: "VP Engineering",
+    source: "Cold Email",
+    score: 85,
+    status: "In Discussion"
+  }
+];
+
+const activeOutreach = [
+  {
+    type: "Cold Email",
+    target: "Tech Leaders",
+    sent: 1250,
+    responses: 186,
+    meetings: 45
+  },
+  {
+    type: "LinkedIn",
+    target: "CTOs",
+    sent: 800,
+    responses: 142,
+    meetings: 38
+  },
+  {
+    type: "Phone",
+    target: "VP Sales",
+    sent: 450,
+    responses: 85,
+    meetings: 24
+  }
+];
+
+const leadGenChannels = [
+  { icon: <Mail className="text-white w-6 h-6" />, color: "neutral", label: "Email Outreach" },
+  { icon: <Phone className="text-white w-6 h-6" />, color: "neutral", label: "Cold Calling" },
+  { icon: <Building className="text-white w-6 h-6" />, color: "neutral", label: "LinkedIn" },
+  { icon: <Target className="text-white w-6 h-6" />, color: "neutral", label: "Campaigns" },
+  { icon: <Users className="text-white w-6 h-6" />, color: "neutral", label: "Database" }
+];
 
 export default function DashboardPage() {
   return (
-    <motion.div
-      variants={container}
-      initial="hidden"
-      animate="show"
-      className="space-y-8"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
-          <p className="text-gray-400">Welcome back! Here's what's happening today.</p>
-        </div>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#9FC5A0] to-[#BDD9BF] text-black font-medium shadow-lg shadow-[#BDD9BF]/25"
-        >
-          New Campaign
-        </motion.button>
+    <div className="space-y-8">
+      {/* header */}
+      <div>
+        <h1 className="text-2xl font-semibold">Welcome back</h1>
+        <p className="text-muted-foreground">Here's an overview of your lead generation performance</p>
       </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-      >
-        {stats.map((stat) => (
-          <motion.div
-            key={stat.name}
-            variants={item}
-            className="p-6 rounded-2xl backdrop-blur-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">{stat.name}</p>
-                <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
-              </div>
-              <div className="p-3 rounded-xl bg-gradient-to-r from-[#9FC5A0]/20 to-[#BDD9BF]/20">
-                <stat.icon className="w-5 h-5 text-[#BDD9BF]" />
-              </div>
+      {/* metrics grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {metrics.map((metric) => (
+          <SpotlightCard key={metric.name} className="p-4">
+            <div className="flex items-center justify-between">
+              <metric.icon className="w-5 h-5" />
+              <span className={`text-xs ${metric.change.startsWith('+') ? 'text-foreground' : 'text-muted-foreground'}`}>
+                {metric.change}
+              </span>
             </div>
-            <div className="mt-4">
-              <span className="text-sm text-[#BDD9BF]">{stat.change}</span>
-              <span className="text-sm text-gray-400 ml-1">vs last month</span>
+            <div className="mt-3">
+              <p className="text-2xl font-medium">{metric.value}</p>
+              <p className="text-xs text-muted-foreground mt-1">{metric.name}</p>
             </div>
-          </motion.div>
+          </SpotlightCard>
         ))}
-      </motion.div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <motion.div
-          variants={item}
-          className="p-6 rounded-2xl backdrop-blur-lg bg-white/5 border border-white/10"
-        >
-          <h2 className="text-lg font-medium text-white mb-4">Recent Campaigns</h2>
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
-              >
-                <div>
-                  <p className="text-white font-medium">Q4 Outreach Campaign</p>
-                  <p className="text-sm text-gray-400">1,234 leads • 67% open rate</p>
-                </div>
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-[#BDD9BF]/20 text-[#BDD9BF]">
-                  Active
-                </span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        <motion.div
-          variants={item}
-          className="p-6 rounded-2xl backdrop-blur-lg bg-white/5 border border-white/10"
-        >
-          <h2 className="text-lg font-medium text-white mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              "Import Leads",
-              "Create Template",
-              "Schedule Campaign",
-              "View Reports",
-            ].map((action) => (
-              <motion.button
-                key={action}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-left"
-              >
-                <p className="text-white font-medium">{action}</p>
-                <p className="text-sm text-gray-400">Click to start</p>
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
       </div>
-    </motion.div>
-  )
+
+      {/* Recent Leads */}
+      <SpotlightCard>
+        <div className="p-4 border-b border-border flex items-center justify-between">
+          <h2 className="text-lg font-medium">Recent High-Value Leads</h2>
+          <Button variant="ghost" size="sm" className="h-8">View All</Button>
+        </div>
+        <div className="divide-y divide-border">
+          {recentLeads.map((lead) => (
+            <div key={lead.name} className="p-4 flex items-center justify-between hover:bg-muted/5 transition-colors">
+              <div>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                    <Building className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">{lead.name}</p>
+                    <p className="text-xs text-muted-foreground">{lead.position} at {lead.company}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-medium">{lead.score} / 100</p>
+                <p className="text-xs text-muted-foreground">{lead.source}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SpotlightCard>
+
+      {/* active outreach */}
+      <SpotlightCard>
+        <div className="p-4 border-b border-border">
+          <h2 className="text-lg font-medium">Active Outreach Campaigns</h2>
+        </div>
+        <div className="divide-y divide-border">
+          {activeOutreach.map((campaign) => (
+            <div key={campaign.type} className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  {campaign.type === "Cold Email" && <Mail className="w-4 h-4" />}
+                  {campaign.type === "LinkedIn" && <Users className="w-4 h-4" />}
+                  {campaign.type === "Phone" && <Phone className="w-4 h-4" />}
+                  <span className="text-sm font-medium">{campaign.type}</span>
+                </div>
+                <span className="text-xs text-muted-foreground">{campaign.target}</span>
+              </div>
+              <div className="grid grid-cols-3 gap-4 mt-3">
+                <div>
+                  <p className="text-sm font-medium">{campaign.sent}</p>
+                  <p className="text-xs text-muted-foreground">Sent</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">{campaign.responses}</p>
+                  <p className="text-xs text-muted-foreground">Responses</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">{campaign.meetings}</p>
+                  <p className="text-xs text-muted-foreground">Meetings</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SpotlightCard>
+    </div>
+  );
 } 
