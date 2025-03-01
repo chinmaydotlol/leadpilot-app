@@ -4,16 +4,20 @@ import crypto from "crypto";
 import clientPromise from "@/lib/mongodb";
 import User from "@/lib/models/user.model";
 import { sendVerificationEmail } from "@/lib/services/email.service";
+import mongoose, { Mongoose } from 'mongoose';
 
 // connect to mongodb before running the route
-let client;
+let client: Mongoose | null = null;
 
-(async () => {
-  client = await clientPromise; // reuse connection
-})();
+async function connectToDatabase() {
+  if (!client) {
+    client = await clientPromise; // reuse connection
+  }
+}
 
 export async function POST(req: Request) {
   try {
+    await connectToDatabase(); // Ensure connection is established
     const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
