@@ -7,6 +7,7 @@ import { sendVerificationEmail } from "@/lib/services/email.service";
 
 // connect to mongodb before running the route
 let client;
+
 (async () => {
   client = await clientPromise; // reuse connection
 })();
@@ -31,7 +32,6 @@ export async function POST(req: Request) {
       Promise.resolve(crypto.randomBytes(32).toString("hex")),
     ]);
 
-  
     await User.create({
       name,
       email,
